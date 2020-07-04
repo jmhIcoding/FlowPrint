@@ -118,7 +118,7 @@ class Reader(object):
                    "-e", "tcp.dstport",
                    "-e", "udp.dstport",
                    "-e", "ip.len",
-                   "-e", "ssl.handshake.certificate"]
+                   "-e", "tls.handshake.certificate"]
         # Initialise result
         result = list()
 
@@ -239,7 +239,7 @@ class Reader(object):
                  packet.layers[1].dst,        # Get destination IP or IPv6 (fixed)
                  packet.layers[2].srcport,    # Get source port
                  packet.layers[2].dstport,    # Get destination port
-                 None]
+                 0]
 
             # Check whether SSL/TLS certificate is in packet
             if "SSL" in packet and\

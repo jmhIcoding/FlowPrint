@@ -153,7 +153,12 @@ class Preprocessor(object):
                 Labels for each flow extracted from files.
             """
         with open(infile, 'rb') as infile:
-            return pickle.load(infile)
+            flows,labels= pickle.load(infile)
+            for each in flows:
+                if each.certificate == None:
+                    each.certificate =0
+            return  flows,labels
+
 
 if __name__ == "__main__":
     preprocessor = Preprocessor(verbose=True)

@@ -2,7 +2,7 @@ import argparse
 import numpy as np
 import os
 from sklearn.model_selection import train_test_split
-
+from sklearn.metrics import  accuracy_score,confusion_matrix
 try:
     from .flowprint    import FlowPrint
     from .preprocessor import Preprocessor
@@ -261,6 +261,9 @@ Train/test input (for --detection/--recognition):
 
         y_current = None
         # Loop over all fingerprints sorted by input label
+        y_real =[]
+        y_predict =[]
+        lableDict ={}
         for fp, y_test_, y_pred_ in sorted(zip(X_test, y_test, prediction),
                                             key=lambda x: list(x[1])):
             # Get label of fingerprint
@@ -270,7 +273,21 @@ Train/test input (for --detection/--recognition):
                 print('\n',y_test_)
                 y_current = y_test_
 
+            if y_test_ not in lableDict:
+                lableDict.setdefault(y_test_,len(lableDict))
+            y_real.append(lableDict[y_test_])
+
             # Output result
             if args.recognition:
                 y_pred_ = list(y_pred_)[0]
+                if y_pred_ not in lableDict:
+                    lableDict.setdefault(y_pred_,len(lableDict))
+                y_predict.append(lableDict[y_pred_])
             print("    {} --> {}".format(fp, y_pred_))
+        # Caculate accuracy, also the number
+        print('Test {0} flow.'.format(len(y_predict)))
+        acc = accuracy_score(y_true=y_real,y_pred=y_predict)
+        print('Accuracy : {0}'.format(acc))
+        conf_mat = confusion_matrix(y_real,y_predict,normalize='true')
+        print(conf_mat)
+
