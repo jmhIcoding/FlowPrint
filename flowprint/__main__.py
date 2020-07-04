@@ -285,7 +285,7 @@ Train/test input (for --detection/--recognition):
                 y_predict.append(lableDict[y_pred_])
             print("    {} --> {}".format(fp, y_pred_))
         # Caculate accuracy, also the number
-        print('Test {0} flow.'.format(len(y_predict)))
+        print('Test {0} flow over {1} classes'.format(len(y_predict),len(lableDict)))
         acc = accuracy_score(y_true=y_real,y_pred=y_predict)
         print('Accuracy : {0}'.format(acc))
         conf_mat = confusion_matrix(y_real,y_predict,normalize='true')
